@@ -30,7 +30,7 @@ const gendiff = (filepath1, filepath2) => {
   const gendiffStr = `{
 ${keys.join('\n')}
 }`;
-  console.log(gendiffStr);
+  return gendiffStr;
 };
 
 export default gendiff;
