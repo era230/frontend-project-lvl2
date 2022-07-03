@@ -3,11 +3,12 @@ import _ from 'lodash';
 import path from 'path';
 import { cwd } from 'node:process';
 
+const getFixturePath = (filepath) => path.resolve(cwd(), filepath);
+const readFile = (filepath) => readFileSync(filepath, 'utf-8');
+
 const gendiff = (filepath1, filepath2) => {
-  const normalizePath1 = path.resolve(cwd(), filepath1);
-  const normalizePath2 = path.resolve(cwd(), filepath2);
-  const obj1 = JSON.parse(readFileSync(normalizePath1, 'utf-8'));
-  const obj2 = JSON.parse(readFileSync(normalizePath2, 'utf-8'));
+  const obj1 = JSON.parse(readFile(getFixturePath(filepath1)));
+  const obj2 = JSON.parse(readFile(getFixturePath(filepath2)));
   const keys1 = Object.keys(obj1);
   const keys2 = Object.keys(obj2);
   const keys = _.sortBy(_.uniq([...keys1, ...keys2]))
