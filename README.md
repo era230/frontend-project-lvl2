@@ -6,3 +6,4 @@
 
 Gendiff compares two configuration files and shows a difference
 [![asciicast](https://asciinema.org/a/DKuJdGubSe9ZEx3F513KgtGua.svg)](https://asciinema.org/a/DKuJdGubSe9ZEx3F513KgtGua)
+[![asciicast](https://asciinema.org/a/gqdApsVNFILQuju1lItQrjS5A.svg)](https://asciinema.org/a/gqdApsVNFILQuju1lItQrjS5A)
