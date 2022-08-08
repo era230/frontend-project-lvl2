@@ -3,6 +3,7 @@ import _ from 'lodash';
 import path from 'path';
 import { cwd } from 'node:process';
 import parse from './parsers.js';
+import formatTree from './stylish.js';
 
 const getObject = (filepath) => {
   const getFixturePath = path.resolve(cwd(), filepath);
@@ -67,7 +68,7 @@ const makeTree = (filepath1, filepath2) => {
   return iter(object1, object2);
 };
 
-const gendiff = (filepath1, filepath2, formatter) => {
+const gendiff = (filepath1, filepath2, formatter = formatTree) => {
   const result = makeTree(filepath1, filepath2);
   return formatter(result);
 };
