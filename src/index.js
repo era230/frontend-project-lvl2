@@ -41,31 +41,35 @@ const getValue = (status, key, object1, object2) => {
     case 'unchanged':
       return object1[key];
     case 'changed':
-      return { valueDel: object1[key], valueAdd: object2[key] };
+      return [object1[key], object2[key]];
     default:
       throw new Error(`Unknown value: ${status}`);
   }
 };
 
-const gendiff = (filepath1, filepath2) => {
+const makeTree = (filepath1, filepath2) => {
   const object1 = getObject(filepath1);
   const object2 = getObject(filepath2);
   const iter = (obj1, obj2) => {
     const keys1 = Object.keys(obj1);
     const keys2 = Object.keys(obj2);
-    const result = _.sortBy(_.union([...keys1, ...keys2]))
+    const tree = _.sortBy(_.union([...keys1, ...keys2]))
       .map((key) => {
         if (!_.isPlainObject(obj1[key]) || !_.isPlainObject(obj2[key])) {
           const status = getStatus(key, obj1, obj2);
-          return mkfile(key, status, getValue(status, key, obj1, obj2));
+          const value = getValue(status, key, obj1, obj2);
+          return mkfile(key, status, value);
         }
         return mkdir(key, iter(obj1[key], obj2[key]));
       });
-    return result;
+    return tree;
   };
   return iter(object1, object2);
 };
 
-export default gendiff;
+const gendiff = (filepath1, filepath2, formatter) => {
+  const result = makeTree(filepath1, filepath2);
+  return formatter(result);
+};
 
-console.log(gendiff('../__fixtures__/file3.json', '../__fixtures__/file4.json'));
+export default gendiff;
