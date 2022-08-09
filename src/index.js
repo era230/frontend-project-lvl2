@@ -38,7 +38,6 @@ const getValue = (status, key, object1, object2) => {
     case 'added':
       return object2[key];
     case 'removed':
-      return object1[key];
     case 'unchanged':
       return object1[key];
     case 'updated':
