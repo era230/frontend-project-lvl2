@@ -6,10 +6,10 @@ const getIndent = (status) => {
   switch (status) {
     case 'added':
       return '  + ';
-    case 'deleted':
+    case 'removed':
       return '  - ';
-    case 'unchanged':
-    case 'changed':
+    case 'un-updated':
+    case 'updated':
       return defaultIndent;
     default:
       throw new Error('Unknown status');
@@ -46,7 +46,7 @@ const formatTree = (coll) => {
   const iter = (data, depth) => {
     const lines = data.map((item) => {
       if (item.type === 'node-leaf') {
-        if (item.status === 'changed') {
+        if (item.status === 'updated') {
           return `${getAddIndent(depth)}  - ${item.name}: ${formatObject(item.value[0], depth + 1)}
 ${getAddIndent(depth)}  + ${item.name}: ${formatObject(item.value[1], depth + 1)}`;
         }

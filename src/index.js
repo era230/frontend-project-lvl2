@@ -3,21 +3,21 @@ import _ from 'lodash';
 import path from 'path';
 import { cwd } from 'node:process';
 import parse from './parsers.js';
-import formatTree from './stylish.js';
+import formatTree from './formatters/stylish.js';
 
 const getObject = (filepath) => {
   const getFixturePath = path.resolve(cwd(), filepath);
   const data = readFileSync(getFixturePath, 'utf-8');
   const extension = path.extname(filepath).toLowerCase();
-  const object = parse(data, extension);
+  const object = parse(extension)(data);
   return object;
 };
 
-const mkfile = (name, status = '', value = '') => ({
+const mkNode = (name, status = '', value = '') => ({
   name, type: 'node-leaf', status, value,
 });
 
-const mkdir = (name, children = []) => ({
+const mkTree = (name, children = []) => ({
   name, type: 'node-internal', children,
 });
 
@@ -26,9 +26,9 @@ const getStatus = (key, object1, object2) => {
   if (!Object.hasOwn(object1, key)) {
     result = 'added';
   } else if (!Object.hasOwn(object2, key)) {
-    result = 'deleted';
+    result = 'removed';
   } else {
-    result = object1[key] === object2[key] ? 'unchanged' : 'changed';
+    result = object1[key] === object2[key] ? 'un-updated' : 'updated';
   }
   return result;
 };
@@ -37,11 +37,11 @@ const getValue = (status, key, object1, object2) => {
   switch (status) {
     case 'added':
       return object2[key];
-    case 'deleted':
+    case 'removed':
       return object1[key];
-    case 'unchanged':
+    case 'un-updated':
       return object1[key];
-    case 'changed':
+    case 'updated':
       return [object1[key], object2[key]];
     default:
       throw new Error(`Unknown value: ${status}`);
@@ -59,18 +59,18 @@ const makeTree = (filepath1, filepath2) => {
         if (!_.isPlainObject(obj1[key]) || !_.isPlainObject(obj2[key])) {
           const status = getStatus(key, obj1, obj2);
           const value = getValue(status, key, obj1, obj2);
-          return mkfile(key, status, value);
+          return mkNode(key, status, value);
         }
-        return mkdir(key, iter(obj1[key], obj2[key]));
+        return mkTree(key, iter(obj1[key], obj2[key]));
       });
     return tree;
   };
   return iter(object1, object2);
 };
 
-const gendiff = (filepath1, filepath2, formatter = formatTree) => {
+const genDiff = (filepath1, filepath2, formatter = formatTree) => {
   const result = makeTree(filepath1, filepath2);
   return formatter(result);
 };
 
-export default gendiff;
+export default genDiff;
