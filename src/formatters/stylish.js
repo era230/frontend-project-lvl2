@@ -8,7 +8,7 @@ const getIndent = (status) => {
       return '  + ';
     case 'removed':
       return '  - ';
-    case 'un-updated':
+    case 'unchanged':
     case 'updated':
       return defaultIndent;
     default:
@@ -45,14 +45,14 @@ const formatObject = (data, depth) => {
 const formatTree = (coll) => {
   const iter = (data, depth) => {
     const lines = data.map((item) => {
-      if (item.type === 'node-leaf') {
-        if (item.status === 'updated') {
-          return `${getAddIndent(depth)}  - ${item.name}: ${formatObject(item.value[0], depth + 1)}
-${getAddIndent(depth)}  + ${item.name}: ${formatObject(item.value[1], depth + 1)}`;
-        }
-        return `${getAddIndent(depth)}${getIndent(item.status)}${item.name}: ${formatObject(item.value, depth + 1)}`;
+      if (item.type === 'nested') {
+        return `${getAddIndent(depth)}${defaultIndent}${item.name}: ${iter(item.children, depth + 1)}`;
       }
-      return `${getAddIndent(depth)}${defaultIndent}${item.name}: ${iter(item.children, depth + 1)}`;
+      if (item.status === 'updated') {
+        return `${getAddIndent(depth)}  - ${item.name}: ${formatObject(item.value[0], depth + 1)}
+${getAddIndent(depth)}  + ${item.name}: ${formatObject(item.value[1], depth + 1)}`;
+      }
+      return `${getAddIndent(depth)}${getIndent(item.status)}${item.name}: ${formatObject(item.value, depth + 1)}`;
     });
     return [
       '{',

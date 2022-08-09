@@ -16,23 +16,21 @@ const formatPlain = (coll) => {
       while (prefixNames.length !== depth) {
         prefixNames.pop();
       }
-      if (item.type === 'node-leaf') {
-        const prefixName = prefixNames.join('');
-        if (item.status === 'added') {
-          return `Property '${prefixName}${item.name}' was added with value: ${getValue(item.value)}`;
-        }
-        if (item.status === 'removed') {
-          return `Property '${prefixName}${item.name}' was removed`;
-        }
-        if (item.status === 'updated') {
-          return `Property '${prefixName}${item.name}' was updated. From ${getValue(item.value[0])} to ${getValue(item.value[1])}`;
-        }
-        if (item.status === 'un-updated') {
-          return null;
-        }
+      if (item.type === 'nested') {
+        prefixNames.push(`${item.name}.`);
+        return iter(item.children, prefixNames, depth + 1);
       }
-      prefixNames.push(`${item.name}.`);
-      return iter(item.children, prefixNames, depth + 1);
+      const prefixName = prefixNames.join('');
+      if (item.status === 'added') {
+        return `Property '${prefixName}${item.name}' was added with value: ${getValue(item.value)}`;
+      }
+      if (item.status === 'removed') {
+        return `Property '${prefixName}${item.name}' was removed`;
+      }
+      if (item.status === 'updated') {
+        return `Property '${prefixName}${item.name}' was updated. From ${getValue(item.value[0])} to ${getValue(item.value[1])}`;
+      }
+      return null;
     });
     return lines.filter((item) => item !== null)
       .join('\n');

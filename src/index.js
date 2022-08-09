@@ -13,12 +13,12 @@ const getObject = (filepath) => {
   return object;
 };
 
-const mkNode = (name, status = '', value = '') => ({
-  name, type: 'node-leaf', status, value,
+const mkfile = (name, status = '', value = '') => ({
+  name, type: 'leaf', status, value,
 });
 
-const mkTree = (name, children = []) => ({
-  name, type: 'node-internal', children,
+const mkdir = (name, children = []) => ({
+  name, type: 'nested', children,
 });
 
 const getStatus = (key, object1, object2) => {
@@ -28,7 +28,7 @@ const getStatus = (key, object1, object2) => {
   } else if (!Object.hasOwn(object2, key)) {
     result = 'removed';
   } else {
-    result = object1[key] === object2[key] ? 'un-updated' : 'updated';
+    result = object1[key] === object2[key] ? 'unchanged' : 'updated';
   }
   return result;
 };
@@ -39,7 +39,7 @@ const getValue = (status, key, object1, object2) => {
       return object2[key];
     case 'removed':
       return object1[key];
-    case 'un-updated':
+    case 'unchanged':
       return object1[key];
     case 'updated':
       return [object1[key], object2[key]];
@@ -59,9 +59,9 @@ const makeTree = (filepath1, filepath2) => {
         if (!_.isPlainObject(obj1[key]) || !_.isPlainObject(obj2[key])) {
           const status = getStatus(key, obj1, obj2);
           const value = getValue(status, key, obj1, obj2);
-          return mkNode(key, status, value);
+          return mkfile(key, status, value);
         }
-        return mkTree(key, iter(obj1[key], obj2[key]));
+        return mkdir(key, iter(obj1[key], obj2[key]));
       });
     return tree;
   };
