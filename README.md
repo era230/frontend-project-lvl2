@@ -5,4 +5,4 @@
 [![Test Coverage](https://api.codeclimate.com/v1/badges/bbe44fc35940defdc36d/test_coverage)](https://codeclimate.com/github/era230/frontend-project-lvl2/test_coverage)
 
 Gendiff compares two configuration files and shows a difference
-[![asciicast](https://asciinema.org/a/Fsc4GHK8AJjxwwgN0kopfIOhW.svg)](https://asciinema.org/a/Fsc4GHK8AJjxwwgN0kopfIOhW)
+[![asciicast](https://asciinema.org/a/wQLqdRoy4mWYEQj5XTHs5iSJo.svg)](https://asciinema.org/a/wQLqdRoy4mWYEQj5XTHs5iSJo)
