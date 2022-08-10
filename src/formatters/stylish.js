@@ -17,16 +17,8 @@ const getIndent = (status) => {
 };
 
 const getAddIndent = (depth) => {
-  if (depth === 0) {
-    return '';
-  }
   const additionalIndent = defaultIndent.repeat(depth);
   return additionalIndent;
-};
-
-const getBracketIndent = (depth) => {
-  const bracketIndent = defaultIndent.repeat(depth);
-  return bracketIndent;
 };
 
 const formatObject = (data, depth) => {
@@ -38,7 +30,7 @@ const formatObject = (data, depth) => {
   return [
     '{',
     ...lines,
-    `${getBracketIndent(depth)}}`,
+    `${getAddIndent(depth)}}`,
   ].join('\n');
 };
 
@@ -56,7 +48,7 @@ ${getAddIndent(depth)}  + ${item.name}: ${formatObject(item.value[1], depth + 1)
   return [
     '{',
     ...lines,
-    `${getBracketIndent(depth)}}`,
+    `${getAddIndent(depth)}}`,
   ].join('\n');
 };
 

@@ -64,8 +64,6 @@ const makeTree = (obj1, obj2) => {
 
 const genDiff = (filepath1, filepath2, formatter = formatTree) => {
   const object1 = getObject(filepath1);
-  console.log(object1);
-  console.log(object1);
   const object2 = getObject(filepath2);
   const result = makeTree(object1, object2);
   return formatter(result);
