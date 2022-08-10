@@ -10,32 +10,31 @@ const getValue = (data) => {
   return data;
 };
 
-const formatPlain = (coll) => {
-  const iter = (data, prefixNames, depth) => {
-    const lines = data.map((item) => {
-      while (prefixNames.length !== depth) {
-        prefixNames.pop();
-      }
-      if (item.type === 'nested') {
-        prefixNames.push(`${item.name}.`);
-        return iter(item.children, prefixNames, depth + 1);
-      }
-      const prefixName = prefixNames.join('');
-      if (item.status === 'added') {
+const formatPlain = (data, prefixNames = [], depth = 0) => {
+  const lines = data.map((item) => {
+    while (prefixNames.length !== depth) {
+      prefixNames.pop();
+    }
+    if (item.type === 'nested') {
+      prefixNames.push(`${item.name}.`);
+      return formatPlain(item.children, prefixNames, depth + 1);
+    }
+    const prefixName = prefixNames.join('');
+    switch (item.status) {
+      case 'added':
         return `Property '${prefixName}${item.name}' was added with value: ${getValue(item.value)}`;
-      }
-      if (item.status === 'removed') {
+      case 'removed':
         return `Property '${prefixName}${item.name}' was removed`;
-      }
-      if (item.status === 'updated') {
+      case 'updated':
         return `Property '${prefixName}${item.name}' was updated. From ${getValue(item.value[0])} to ${getValue(item.value[1])}`;
-      }
-      return null;
-    });
-    return lines.filter((item) => item !== null)
-      .join('\n');
-  };
-  return iter(coll, [], 0);
+      case 'unchanged':
+        return null;
+      default:
+        throw new Error(`Unknown status: ${item.status}`);
+    }
+  });
+  return lines.filter((item) => item !== null)
+    .join('\n');
 };
 
 export default formatPlain;

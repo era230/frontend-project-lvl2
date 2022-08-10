@@ -47,29 +47,27 @@ const getValue = (status, key, object1, object2) => {
   }
 };
 
-const makeTree = (filepath1, filepath2) => {
-  const object1 = getObject(filepath1);
-  const object2 = getObject(filepath2);
-  const iter = (obj1, obj2) => {
-    const keys1 = Object.keys(obj1);
-    const keys2 = Object.keys(obj2);
-    const tree = _.sortBy(_.union([...keys1, ...keys2]))
-      .map((key) => {
-        if (!_.isPlainObject(obj1[key]) || !_.isPlainObject(obj2[key])) {
-          const status = getStatus(key, obj1, obj2);
-          const value = getValue(status, key, obj1, obj2);
-          return mkfile(key, status, value);
-        }
-        return mkdir(key, iter(obj1[key], obj2[key]));
-      });
-    return tree;
-  };
-  return iter(object1, object2);
+const makeTree = (obj1, obj2) => {
+  const keys1 = Object.keys(obj1);
+  const keys2 = Object.keys(obj2);
+  const tree = _.sortBy(_.union([...keys1, ...keys2]))
+    .map((key) => {
+      if (!_.isPlainObject(obj1[key]) || !_.isPlainObject(obj2[key])) {
+        const status = getStatus(key, obj1, obj2);
+        const value = getValue(status, key, obj1, obj2);
+        return mkfile(key, status, value);
+      }
+      return mkdir(key, makeTree(obj1[key], obj2[key]));
+    });
+  return tree;
 };
 
 const genDiff = (filepath1, filepath2, formatter = formatTree) => {
-  const result = makeTree(filepath1, filepath2);
-  console.log(formatter(result));
+  const object1 = getObject(filepath1);
+  console.log(object1);
+  console.log(object1);
+  const object2 = getObject(filepath2);
+  const result = makeTree(object1, object2);
   return formatter(result);
 };
 
