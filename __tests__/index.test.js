@@ -14,9 +14,10 @@ const readFile = (filename) => readFileSync(getFixturePath(filename), 'utf-8');
 
 const files = [
   ['file1.json', 'file2.json', formatTree, 'stylishTest.txt'],
-  ['file1.yml', 'file2.yaml', formatTree, 'stylishTest.txt'],
+  ['file1.yml', 'file2.yml', formatTree, 'stylishTest.txt'],
+  ['file1.json', 'file2.yml', formatTree, 'stylishTest.txt'],
   ['file1.json', 'file2.yaml', formatTree, 'stylishTest.txt'],
-  ['file1.yml', 'file2.json', formatPlain, 'plainTest.txt'],
+  ['file1.yml', 'file2.yaml', formatPlain, 'plainTest.txt'],
   ['file1.json', 'file2.json', formatJson, 'jsonTest.txt'],
 ];
 
