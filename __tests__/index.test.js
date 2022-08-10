@@ -21,7 +21,7 @@ const files = [
   ['file1.json', 'file2.json', formatJson, 'jsonTest.txt'],
 ];
 
-test.each((files))('check %p and %p as %p', (file1, file2, formatter, testFile) => {
+test.each((files))('compare %p and %p in %p', (file1, file2, formatter, testFile) => {
   const filepath1 = getFixturePath(file1);
   const filepath2 = getFixturePath(file2);
   const expectedFile = readFile(testFile);
