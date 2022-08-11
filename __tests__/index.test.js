@@ -19,7 +19,6 @@ const files = [
   ['file1.json', 'file2.yaml', formatTree, 'stylishTest.txt'],
   ['file1.yml', 'file2.yaml', formatPlain, 'plainTest.txt'],
   ['file1.json', 'file2.json', formatJson, 'jsonTest.txt'],
-  ['hexletTest1.json', 'hexletTest2.json', formatTree, 'test_stylish.txt'],
 ];
 
 test.each((files))('compare %p and %p in %p', (file1, file2, formatter, testFile) => {
