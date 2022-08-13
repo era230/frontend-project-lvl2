@@ -3,9 +3,6 @@ import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { test, expect } from '@jest/globals';
 import genDiff from '../src/index.js';
-import formatTree from '../src/formatters/stylish.js';
-import formatPlain from '../src/formatters/plain.js';
-import formatJson from '../src/formatters/json.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
