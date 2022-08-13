@@ -8,10 +8,12 @@ const program = new Command();
 program
   .version('0.0.1', '-v, --VERSION', 'output the version number')
   .description('Compares two configuration files and shows a difference.')
-  .option('-f, --format <type>', 'output format', 'stylish')
+  .option('-f, --format <type>', 'output format', 'stylish', chooseFormatter)
   .arguments('<filepath1> <filepath2>')
   .action((filepath1, filepath2, options) => {
     const formatter = chooseFormatter(options.format);
+    console.log(options.format);
+    console.log(chooseFormatter(options.format));
     console.log(genDiff(filepath1, filepath2, formatter));
   });
 
