@@ -12,16 +12,16 @@ const getValue = (data) => {
 
 const formatPlain = (data, names = [], depth = 0) => {
   const lines = data.map((item) => {
-    const x = [...names, item.name];
+    const resultNames = [...names, item.name];
     switch (item.status) {
       case 'nested':
-        return formatPlain(item.children, x, depth + 1);
+        return formatPlain(item.children, resultNames, depth + 1);
       case 'added':
-        return `Property '${x.join('.')}' was added with value: ${getValue(item.value)}`;
+        return `Property '${resultNames.join('.')}' was added with value: ${getValue(item.value)}`;
       case 'removed':
-        return `Property '${x.join('.')}' was removed`;
+        return `Property '${resultNames.join('.')}' was removed`;
       case 'updated':
-        return `Property '${x.join('.')}' was updated. From ${getValue(item.value[0])} to ${getValue(item.value[1])}`;
+        return `Property '${resultNames.join('.')}' was updated. From ${getValue(item.value[0])} to ${getValue(item.value[1])}`;
       case 'unchanged':
         return null;
       default:
