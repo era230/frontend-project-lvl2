@@ -36,7 +36,7 @@ const formatObject = (data, depth) => {
 
 const formatTree = (data, depth = 0) => {
   const lines = data.map((item) => {
-    if (item.type === 'nested') {
+    if (item.status === 'nested') {
       return `${getAddIndent(depth)}${defaultIndent}${item.name}: ${formatTree(item.children, depth + 1)}`;
     }
     if (item.status === 'updated') {

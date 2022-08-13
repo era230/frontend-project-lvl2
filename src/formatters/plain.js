@@ -10,23 +10,18 @@ const getValue = (data) => {
   return data;
 };
 
-const formatPlain = (data, prefixNames = [], depth = 0) => {
+const formatPlain = (data, names = [], depth = 0) => {
   const lines = data.map((item) => {
-    while (prefixNames.length !== depth) {
-      prefixNames.pop();
-    }
-    if (item.type === 'nested') {
-      prefixNames.push(`${item.name}.`);
-      return formatPlain(item.children, prefixNames, depth + 1);
-    }
-    const prefixName = prefixNames.join('');
+    const x = [...names, item.name];
     switch (item.status) {
+      case 'nested':
+        return formatPlain(item.children, x, depth + 1);
       case 'added':
-        return `Property '${prefixName}${item.name}' was added with value: ${getValue(item.value)}`;
+        return `Property '${x.join('.')}' was added with value: ${getValue(item.value)}`;
       case 'removed':
-        return `Property '${prefixName}${item.name}' was removed`;
+        return `Property '${x.join('.')}' was removed`;
       case 'updated':
-        return `Property '${prefixName}${item.name}' was updated. From ${getValue(item.value[0])} to ${getValue(item.value[1])}`;
+        return `Property '${x.join('.')}' was updated. From ${getValue(item.value[0])} to ${getValue(item.value[1])}`;
       case 'unchanged':
         return null;
       default:

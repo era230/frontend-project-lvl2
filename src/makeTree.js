@@ -1,23 +1,20 @@
 import _ from 'lodash';
 
 const mkfile = (name, status = '', value = '') => ({
-  name, type: 'leaf', status, value,
+  name, status, value,
 });
 
 const mkdir = (name, children = []) => ({
-  name, type: 'nested', children,
+  name, status: 'nested', children,
 });
 
 const getStatus = (key, object1, object2) => {
-  let result = '';
   if (!Object.hasOwn(object1, key)) {
-    result = 'added';
-  } else if (!Object.hasOwn(object2, key)) {
-    result = 'removed';
-  } else {
-    result = object1[key] === object2[key] ? 'unchanged' : 'updated';
+    return 'added';
+  } if (!Object.hasOwn(object2, key)) {
+    return 'removed';
   }
-  return result;
+  return object1[key] === object2[key] ? 'unchanged' : 'updated';
 };
 
 const getValue = (status, key, object1, object2) => {
