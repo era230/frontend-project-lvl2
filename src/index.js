@@ -5,9 +5,11 @@ import parse from './parsers.js';
 import makeTree from './makeTree.js';
 import chooseFormatter from './formatters/index.js';
 
+const getFixturePath = (filepath) => path.resolve(cwd(), filepath);
+const getData = (filepath) => readFileSync(getFixturePath(filepath), 'utf-8');
+
 const getObject = (filepath) => {
-  const getFixturePath = path.resolve(cwd(), filepath);
-  const data = readFileSync(getFixturePath, 'utf-8');
+  const data = getData(filepath);
   const extension = path.extname(filepath).toLowerCase();
   const object = parse(extension)(data);
   return object;
