@@ -1,7 +1,6 @@
 import { readFileSync } from 'fs';
 import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { test, expect } from '@jest/globals';
 import genDiff from '../src/index.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -12,8 +11,8 @@ const readFile = (filename) => readFileSync(getFixturePath(filename), 'utf-8');
 const files = [
   ['file1.json', 'file2.json', 'stylish', 'stylishTest.txt'],
   ['file1.yml', 'file2.yml', 'stylish', 'stylishTest.txt'],
-  ['file1.json', 'file2.yml', 'stylish', 'stylishTest.txt'],
-  ['file1.json', 'file2.yaml', undefined, 'stylishTest.txt'],
+  ['file1.json', 'file2.yaml', 'stylish', 'stylishTest.txt'],
+  ['file1.json', 'file2.yml', undefined, 'stylishTest.txt'],
   ['file1.yaml', 'file2.yml', 'plain', 'plainTest.txt'],
   ['file1.json', 'file2.json', 'json', 'jsonTest.txt'],
 ];

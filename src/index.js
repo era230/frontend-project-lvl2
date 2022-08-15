@@ -1,12 +1,11 @@
 import { readFileSync } from 'fs';
 import path from 'path';
-import { cwd } from 'node:process';
 import _ from 'lodash';
 import parse from './parsers.js';
 import makeTree from './makeTree.js';
 import chooseFormatter from './formatters/index.js';
 
-const getFilepath = (filepath) => path.resolve(cwd(), filepath);
+const getFilepath = (filepath) => path.resolve(process.cwd(), filepath);
 const getData = (filepath) => readFileSync(getFilepath(filepath), 'utf-8');
 
 const getObject = (filepath) => {
