@@ -23,16 +23,16 @@ const getValue = (status, key, object1, object2) => {
   }
 };
 
-const makeTree = (obj1, obj2) => {
-  const keys1 = Object.keys(obj1);
-  const keys2 = Object.keys(obj2);
+const makeTree = (fileData1, fileData2) => {
+  const keys1 = Object.keys(fileData1);
+  const keys2 = Object.keys(fileData2);
   const tree = _.sortBy(_.union(keys1, keys2))
     .map((name) => {
-      if (_.isPlainObject(obj1[name]) && _.isPlainObject(obj2[name])) {
-        return { name, status: 'nested', children: makeTree(obj1[name], obj2[name]) };
+      if (_.isPlainObject(fileData1[name]) && _.isPlainObject(fileData2[name])) {
+        return { name, status: 'nested', children: makeTree(fileData1[name], fileData2[name]) };
       }
-      const status = getStatus(name, obj1, obj2);
-      const value = getValue(status, name, obj1, obj2);
+      const status = getStatus(name, fileData1, fileData2);
+      const value = getValue(status, name, fileData1, fileData2);
       return { name, status, value };
     });
   return tree;

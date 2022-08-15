@@ -18,9 +18,9 @@ const getObject = (filepath) => {
 };
 
 const genDiff = (filepath1, filepath2, formatName = 'stylish') => {
-  const obj1 = getObject(filepath1);
-  const obj2 = getObject(filepath2);
-  const tree = makeTree(obj1, obj2);
+  const fileData1 = getObject(filepath1);
+  const fileData2 = getObject(filepath2);
+  const tree = makeTree(fileData1, fileData2);
   return chooseFormatter(formatName, tree);
 };
 
