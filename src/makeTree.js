@@ -9,20 +9,6 @@ const getStatus = (key, object1, object2) => {
   return object1[key] === object2[key] ? 'unchanged' : 'updated';
 };
 
-const getValue = (status, key, object1, object2) => {
-  switch (status) {
-    case 'added':
-      return object2[key];
-    case 'removed':
-    case 'unchanged':
-      return object1[key];
-    case 'updated':
-      return [object1[key], object2[key]];
-    default:
-      throw new Error(`Unknown value: ${status}`);
-  }
-};
-
 const makeTree = (fileData1, fileData2) => {
   const keys1 = Object.keys(fileData1);
   const keys2 = Object.keys(fileData2);
@@ -32,8 +18,17 @@ const makeTree = (fileData1, fileData2) => {
         return { name, status: 'nested', children: makeTree(fileData1[name], fileData2[name]) };
       }
       const status = getStatus(name, fileData1, fileData2);
-      const value = getValue(status, name, fileData1, fileData2);
-      return { name, status, value };
+      switch (status) {
+        case 'added':
+          return { name, status, value: fileData2[name] };
+        case 'removed':
+        case 'unchanged':
+          return { name, status, value: fileData1[name] };
+        case 'updated':
+          return { name, status, value: [fileData1[name], fileData2[name]] };
+        default:
+          throw new Error(`Unknown value: ${status}`);
+      }
     });
   return tree;
 };

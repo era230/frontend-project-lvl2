@@ -2,20 +2,6 @@ import _ from 'lodash';
 
 const defaultIndent = '    ';
 
-const getIndent = (status) => {
-  switch (status) {
-    case 'added':
-      return '  + ';
-    case 'removed':
-      return '  - ';
-    case 'unchanged':
-    case 'updated':
-      return defaultIndent;
-    default:
-      throw new Error('Unknown status');
-  }
-};
-
 const getAddIndent = (depth) => {
   const additionalIndent = defaultIndent.repeat(depth);
   return additionalIndent;
@@ -44,9 +30,11 @@ const formatTree = (data) => {
           return `${getAddIndent(depth)}  - ${item.name}: ${formatObject(item.value[0], depth + 1)}
 ${getAddIndent(depth)}  + ${item.name}: ${formatObject(item.value[1], depth + 1)}`;
         case 'added':
+          return `${getAddIndent(depth)}  + ${item.name}: ${formatObject(item.value, depth + 1)}`;
         case 'removed':
+          return `${getAddIndent(depth)}  - ${item.name}: ${formatObject(item.value, depth + 1)}`;
         case 'unchanged':
-          return `${getAddIndent(depth)}${getIndent(item.status)}${item.name}: ${formatObject(item.value, depth + 1)}`;
+          return `${getAddIndent(depth)}${defaultIndent}${item.name}: ${formatObject(item.value, depth + 1)}`;
         default:
           throw new Error(`Unknown status: ${item.status}`);
       }
