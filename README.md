@@ -20,16 +20,16 @@ make install
 make link
 ```
 ## **Usage** ##
-### Help ###
+#### Help ####
     $ gendiff -h
-### Start ###
+#### Start ####
     $ gendiff [options] <filepath1> <filepath2>
-### Options ###
+#### Options ####
 Gendiff suggests three output formats:
 + stylish (default)
 + plain
 + json
-### Examples ###
+#### Examples ####
 file1.json
 ```
 {
@@ -75,5 +75,5 @@ $ gendiff -f json
 
 [{"name":"follow","status":"removed","value":false},{"name":"host","status":"unchanged","value":"hexlet.io"},{"name":"proxy","status":"removed","value":"123.234.53.22"},{"name":"timeout","status":"updated","value":[50,20]},{"name":"verbose","status":"added","value":true}]
 ```
-### Demo ###
+#### Demo ####
 [![asciicast](https://asciinema.org/a/wQLqdRoy4mWYEQj5XTHs5iSJo.svg)](https://asciinema.org/a/wQLqdRoy4mWYEQj5XTHs5iSJo)
