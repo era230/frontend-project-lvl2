@@ -1,13 +1,5 @@
 import _ from 'lodash';
 
-const mkfile = (name, status = '', value = '') => ({
-  name, status, value,
-});
-
-const mkdir = (name, children = []) => ({
-  name, status: 'nested', children,
-});
-
 const getStatus = (key, object1, object2) => {
   if (!Object.hasOwn(object1, key)) {
     return 'added';
@@ -34,14 +26,14 @@ const getValue = (status, key, object1, object2) => {
 const makeTree = (obj1, obj2) => {
   const keys1 = Object.keys(obj1);
   const keys2 = Object.keys(obj2);
-  const tree = _.sortBy(_.union([...keys1, ...keys2]))
-    .map((key) => {
-      if (!_.isPlainObject(obj1[key]) || !_.isPlainObject(obj2[key])) {
-        const status = getStatus(key, obj1, obj2);
-        const value = getValue(status, key, obj1, obj2);
-        return mkfile(key, status, value);
+  const tree = _.sortBy(_.union(keys1, keys2))
+    .map((name) => {
+      if (_.isPlainObject(obj1[name]) && _.isPlainObject(obj2[name])) {
+        return { name, status: 'nested', children: makeTree(obj1[name], obj2[name]) };
       }
-      return mkdir(key, makeTree(obj1[key], obj2[key]));
+      const status = getStatus(name, obj1, obj2);
+      const value = getValue(status, name, obj1, obj2);
+      return { name, status, value };
     });
   return tree;
 };

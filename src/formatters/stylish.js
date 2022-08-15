@@ -34,22 +34,30 @@ const formatObject = (data, depth) => {
   ].join('\n');
 };
 
-const formatTree = (data, depth = 0) => {
-  const lines = data.map((item) => {
-    if (item.status === 'nested') {
-      return `${getAddIndent(depth)}${defaultIndent}${item.name}: ${formatTree(item.children, depth + 1)}`;
-    }
-    if (item.status === 'updated') {
-      return `${getAddIndent(depth)}  - ${item.name}: ${formatObject(item.value[0], depth + 1)}
+const formatTree = (data) => {
+  const iter = (tree, depth) => {
+    const lines = tree.map((item) => {
+      switch (item.status) {
+        case 'nested':
+          return `${getAddIndent(depth)}${defaultIndent}${item.name}: ${iter(item.children, depth + 1)}`;
+        case 'updated':
+          return `${getAddIndent(depth)}  - ${item.name}: ${formatObject(item.value[0], depth + 1)}
 ${getAddIndent(depth)}  + ${item.name}: ${formatObject(item.value[1], depth + 1)}`;
-    }
-    return `${getAddIndent(depth)}${getIndent(item.status)}${item.name}: ${formatObject(item.value, depth + 1)}`;
-  });
-  return [
-    '{',
-    ...lines,
-    `${getAddIndent(depth)}}`,
-  ].join('\n');
+        case 'added':
+        case 'removed':
+        case 'unchanged':
+          return `${getAddIndent(depth)}${getIndent(item.status)}${item.name}: ${formatObject(item.value, depth + 1)}`;
+        default:
+          throw new Error(`Unknown status: ${item.status}`);
+      }
+    });
+    return [
+      '{',
+      ...lines,
+      `${getAddIndent(depth)}}`,
+    ].join('\n');
+  };
+  return iter(data, 0);
 };
 
 export default formatTree;

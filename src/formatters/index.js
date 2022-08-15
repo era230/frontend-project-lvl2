@@ -1,18 +1,17 @@
 import formatTree from './stylish.js';
 import formatPlain from './plain.js';
-import formatJson from './json.js';
 
-const chooseFormatter = (formatName) => {
-  if (formatName === 'stylish') {
-    return formatTree;
+const chooseFormatter = (formatName, data) => {
+  switch (formatName) {
+    case 'stylish':
+      return formatTree(data);
+    case 'plain':
+      return formatPlain(data);
+    case 'json':
+      return JSON.stringify(data);
+    default:
+      throw new Error(`Unknown formatName: '${formatName}`);
   }
-  if (formatName === 'plain') {
-    return formatPlain;
-  }
-  if (formatName === 'json') {
-    return formatJson;
-  }
-  throw new Error(`Unknown formatName: '${formatName}`);
 };
 
 export default chooseFormatter;

@@ -13,8 +13,8 @@ const files = [
   ['file1.json', 'file2.json', 'stylish', 'stylishTest.txt'],
   ['file1.yml', 'file2.yml', 'stylish', 'stylishTest.txt'],
   ['file1.json', 'file2.yml', 'stylish', 'stylishTest.txt'],
-  ['file1.json', 'file2.yaml', 'stylish', 'stylishTest.txt'],
-  ['file1.yml', 'file2.yaml', 'plain', 'plainTest.txt'],
+  ['file1.json', 'file2.yaml', undefined, 'stylishTest.txt'],
+  ['file1.yaml', 'file2.yml', 'plain', 'plainTest.txt'],
   ['file1.json', 'file2.json', 'json', 'jsonTest.txt'],
 ];
 
