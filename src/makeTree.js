@@ -1,6 +1,9 @@
 import _ from 'lodash';
 
 const getStatus = (key, object1, object2) => {
+  if (_.isPlainObject(object1[key]) && _.isPlainObject(object2[key])) {
+    return 'nested';
+  }
   if (!Object.hasOwn(object1, key)) {
     return 'added';
   } if (!Object.hasOwn(object2, key)) {
@@ -14,11 +17,10 @@ const makeTree = (fileData1, fileData2) => {
   const keys2 = Object.keys(fileData2);
   const tree = _.sortBy(_.union(keys1, keys2))
     .map((name) => {
-      if (_.isPlainObject(fileData1[name]) && _.isPlainObject(fileData2[name])) {
-        return { name, status: 'nested', children: makeTree(fileData1[name], fileData2[name]) };
-      }
       const status = getStatus(name, fileData1, fileData2);
       switch (status) {
+        case 'nested':
+          return { name, status, children: makeTree(fileData1[name], fileData2[name]) };
         case 'added':
           return { name, status, value: fileData2[name] };
         case 'removed':
