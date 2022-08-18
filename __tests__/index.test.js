@@ -5,7 +5,8 @@ import genDiff from '../src/index.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const getFixturePath = (filename) => path.join(__dirname, '..', '__fixtures__', filename);
+const getFixturePath = (filename) =>
+  path.join(__dirname, '..', '__fixtures__', filename);
 const readFile = (filename) => readFileSync(getFixturePath(filename), 'utf-8');
 
 const files = [
@@ -17,9 +18,14 @@ const files = [
   ['file1.json', 'file2.json', 'json', 'jsonTest.txt'],
 ];
 
-test.each((files))('compare %p and %p in %p', (file1, file2, formatName, testFile) => {
-  const filepath1 = getFixturePath(file1);
-  const filepath2 = getFixturePath(file2);
-  const expectedFile = readFile(testFile);
-  expect(genDiff(filepath1, filepath2, formatName)).toEqual(expect.stringContaining(expectedFile));
-});
+test.each(files)(
+  'compare %p and %p in %p',
+  (file1, file2, formatName, testFile) => {
+    const filepath1 = getFixturePath(file1);
+    const filepath2 = getFixturePath(file2);
+    const expectedFile = readFile(testFile);
+    expect(genDiff(filepath1, filepath2, formatName)).toEqual(
+      expect.stringContaining(expectedFile)
+    );
+  }
+);

@@ -1,37 +1,35 @@
 import _ from 'lodash';
 
-const getStatus = (key, object1, object2) => {
-  if (_.isPlainObject(object1[key]) && _.isPlainObject(object2[key])) {
-    return 'nested';
-  }
-  if (!Object.hasOwn(object1, key)) {
-    return 'added';
-  } if (!Object.hasOwn(object2, key)) {
-    return 'removed';
-  }
-  return object1[key] === object2[key] ? 'unchanged' : 'updated';
-};
-
 const makeTree = (fileData1, fileData2) => {
   const keys1 = Object.keys(fileData1);
   const keys2 = Object.keys(fileData2);
-  const tree = _.sortBy(_.union(keys1, keys2))
-    .map((name) => {
-      const status = getStatus(name, fileData1, fileData2);
-      switch (status) {
-        case 'nested':
-          return { name, status, children: makeTree(fileData1[name], fileData2[name]) };
-        case 'added':
-          return { name, status, value: fileData2[name] };
-        case 'removed':
-        case 'unchanged':
-          return { name, status, value: fileData1[name] };
-        case 'updated':
-          return { name, status, value: [fileData1[name], fileData2[name]] };
-        default:
-          throw new Error(`Unknown value: ${status}`);
-      }
-    });
+  const tree = _.sortBy(_.union(keys1, keys2)).map((key) => {
+    if (_.isPlainObject(fileData1[key]) && _.isPlainObject(fileData2[key])) {
+      return {
+        name: key,
+        status: 'nested',
+        children: makeTree(fileData1[key], fileData2[key]),
+      };
+    }
+    if (!Object.hasOwn(fileData1, key)) {
+      return { name: key, status: 'added', value: fileData2[key] };
+    }
+    if (!Object.hasOwn(fileData2, key)) {
+      return { name: key, status: 'removed', value: fileData1[key] };
+    }
+    if (fileData1[key] !== fileData2[key]) {
+      return {
+        name: key,
+        status: 'updated',
+        value1: fileData1[key],
+        value2: fileData2[key],
+      };
+    }
+    if (fileData1[key] === fileData2[key]) {
+      return { name: key, status: 'unchanged', value: fileData1[key] };
+    }
+    throw new Error('Unknown status');
+  });
   return tree;
 };
 

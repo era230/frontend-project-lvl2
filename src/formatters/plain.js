@@ -14,23 +14,27 @@ const formatPlain = (data) => {
   const iter = (tree, names, depth) => {
     const lines = tree.map((item) => {
       const resultNames = [...names, item.name];
+      const resultName = resultNames.join('.');
       switch (item.status) {
         case 'nested':
           return iter(item.children, resultNames, depth + 1);
         case 'added':
-          return `Property '${resultNames.join('.')}' was added with value: ${getValue(item.value)}`;
+          return `Property '${resultName}' was added with value: ${getValue(
+            item.value
+          )}`;
         case 'removed':
-          return `Property '${resultNames.join('.')}' was removed`;
+          return `Property '${resultName}' was removed`;
         case 'updated':
-          return `Property '${resultNames.join('.')}' was updated. From ${getValue(item.value[0])} to ${getValue(item.value[1])}`;
+          return `Property '${resultName}' was updated. From ${getValue(
+            item.value1
+          )} to ${getValue(item.value2)}`;
         case 'unchanged':
           return null;
         default:
           throw new Error(`Unknown status: ${item.status}`);
       }
     });
-    return lines.filter((item) => item !== null)
-      .join('\n');
+    return lines.filter((item) => item !== null).join('\n');
   };
   return iter(data, [], 0);
 };
