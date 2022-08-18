@@ -23,7 +23,10 @@ const formatTree = (data) => {
     const lines = tree.map((item) => {
       switch (item.status) {
         case 'nested':
-          return `${addIndent}${defaultIndent}${item.name}: ${iter(item.children, depth + 1)}`;
+          return `${addIndent}${defaultIndent}${item.name}: ${iter(
+            item.children,
+            depth + 1,
+          )}`;
         case 'updated':
           return `${addIndent}  - ${item.name}: ${formatObject(
             item.value1,
@@ -35,7 +38,10 @@ ${addIndent}  + ${item.name}: ${formatObject(item.value2, depth + 1)}`;
         case 'removed':
           return `${addIndent}  - ${item.name}: ${formatObject(item.value, depth + 1)}`;
         case 'unchanged':
-          return `${addIndent}${defaultIndent}${item.name}: ${formatObject(item.value, depth + 1)}`;
+          return `${addIndent}${defaultIndent}${item.name}: ${formatObject(
+            item.value,
+            depth + 1,
+          )}`;
         default:
           throw new Error(`Unknown status: ${item.status}`);
       }

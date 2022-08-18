@@ -16,7 +16,7 @@ const getStatus = (key, fileData1, fileData2) => {
   if (fileData1[key] === fileData2[key]) {
     return 'unchanged';
   }
-  throw new Error('Unknown status');
+  throw new Error('Getting status error');
 };
 
 const makeTree = (fileData1, fileData2) => {
@@ -44,7 +44,7 @@ const makeTree = (fileData1, fileData2) => {
           value2: fileData2[key],
         };
       default:
-        return null;
+        throw new Error(`Unknown ${status}`);
     }
   });
   return tree;
