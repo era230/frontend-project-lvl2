@@ -2,11 +2,9 @@ env:
   node: true
 plugins:
   - jest
-  - 'prettier'
 extends:
   - airbnb-base
   - 'plugin:jest/recommended'
-  - 'prettier'
 parserOptions:
   ecmaVersion: latest
   sourceType: module

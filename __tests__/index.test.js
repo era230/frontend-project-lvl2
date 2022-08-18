@@ -5,8 +5,7 @@ import genDiff from '../src/index.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const getFixturePath = (filename) =>
-  path.join(__dirname, '..', '__fixtures__', filename);
+const getFixturePath = (filename) => path.join(__dirname, '..', '__fixtures__', filename);
 const readFile = (filename) => readFileSync(getFixturePath(filename), 'utf-8');
 
 const files = [
@@ -25,7 +24,7 @@ test.each(files)(
     const filepath2 = getFixturePath(file2);
     const expectedFile = readFile(testFile);
     expect(genDiff(filepath1, filepath2, formatName)).toEqual(
-      expect.stringContaining(expectedFile)
+      expect.stringContaining(expectedFile),
     );
-  }
+  },
 );

@@ -19,14 +19,12 @@ const formatPlain = (data) => {
         case 'nested':
           return iter(item.children, resultNames, depth + 1);
         case 'added':
-          return `Property '${resultName}' was added with value: ${getValue(
-            item.value
-          )}`;
+          return `Property '${resultName}' was added with value: ${getValue(item.value)}`;
         case 'removed':
           return `Property '${resultName}' was removed`;
         case 'updated':
           return `Property '${resultName}' was updated. From ${getValue(
-            item.value1
+            item.value1,
           )} to ${getValue(item.value2)}`;
         case 'unchanged':
           return null;
