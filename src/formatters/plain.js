@@ -23,9 +23,9 @@ const formatPlain = (data) => {
         case 'removed':
           return `Property '${resultName}' was removed`;
         case 'updated':
-          return `Property '${resultName}' was updated. From ${getValue(
-            item.value1,
-          )} to ${getValue(item.value2)}`;
+          return `Property '${resultName}' was updated. From ${getValue(item.value1)} to ${getValue(
+            item.value2,
+          )}`;
         case 'unchanged':
           return null;
         default:

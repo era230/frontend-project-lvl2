@@ -10,8 +10,8 @@ const readFile = (filepath) => readFileSync(getAbsolutePath(filepath), 'utf-8');
 
 const getData = (filepath) => {
   const fileData = readFile(filepath);
-  const extencion = _.last(filepath.split('.')).toLowerCase();
-  const object = parse(extencion, fileData);
+  const extension = _.last(filepath.split('.')).toLowerCase();
+  const object = parse(extension, fileData);
   return object;
 };
 
