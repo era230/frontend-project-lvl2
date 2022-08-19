@@ -22,8 +22,10 @@ const formatTree = (data) => {
         case 'nested':
           return `${addIndent}${defaultIndent}${item.name}: ${iter(item.children, depth + 1)}`;
         case 'updated':
-          return `${addIndent}  - ${item.name}: ${formatObject(item.value1, depth + 1)}
-${addIndent}  + ${item.name}: ${formatObject(item.value2, depth + 1)}`;
+          return `${addIndent}  - ${item.name}: ${formatObject(
+            item.value1,
+            depth + 1,
+          )}\n${addIndent}  + ${item.name}: ${formatObject(item.value2, depth + 1)}`;
         case 'added':
           return `${addIndent}  + ${item.name}: ${formatObject(item.value, depth + 1)}`;
         case 'removed':
